@@ -1,27 +1,24 @@
 from tkinter import *
-from tkinter import filedialog
+from tkinter.filedialog import askopenfilenames
+
 from PIL import Image
 
 root = Tk()
 
-def chooseFile():
-    global choice
-    choice = filedialog.askopenfilenames(title='Choose a file')
-    pickLabel = Label(root, text=choice).pack()
-
-pickButton = Button(root, text='Choose File', command=chooseFile).pack()
+def pickFile():
+    global fileName
+    fileName = askopenfilenames()
 
 def convertFile():
-    path = choice
-    pdf = Image.open(path)
-    pdf.save(path)
+    try:
+        path = fileName[0]
+        pdf = Image.open(path)
+        pdf.save(path + '.pdf')
+    except ValueError:
+        pass
 
 
-convertButton = Button(root, text='Convert', command=lambda:convertFile()).pack()
-
-# pdf = Image.open(path)
-# pdf.save(r'C:\Users\VD102541\Desktop\Barcodes\20210601_155926.pdf')
-
-
+chooseButton = Button(root, text='pick a file', command=pickFile).pack()
+convertButton = Button(root, text='convert', command=convertFile).pack()
 
 root.mainloop()
